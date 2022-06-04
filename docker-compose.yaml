@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  admin_api:
+    container_name: django_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/restapi
+    ports:
+       - 8000:8000
+    depends_on:
+      - admin_db
+
+
+  admin_db:
+    container_name: django_admin_db
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: "db"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+      postgresql_DATABASE: django_admin
+      postgresql_USER: postgres
+      postgresql_PASSWORD: root
+      postgresql_ROOT_PASSWORD: root
+    volumes:
+      - .dbdata:/var/lib/postgresql
+    ports:
+      - 5432:5432
